@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Admin | Mraffix Market</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans Ethiopic',system-ui,sans-serif;background:#EEF3F0;color:#0B1F1A;padding:24px;line-height:1.5}
+.wrap{max-width:860px;margin:auto}
+h1{margin-bottom:6px}
+h2{margin:28px 0 12px}
+.box{background:#fff;border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 6px 20px rgba(14,59,46,.1)}
+label{display:block;font-size:.85rem;color:#4b625b;margin:10px 0 4px}
+input,textarea{width:100%;padding:10px;border:1px solid #c9d8d1;border-radius:10px;font:inherit}
+.row{display:grid;grid-template-columns:2fr 1fr 70px 90px;gap:10px}
+.row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+button{border:0;border-radius:10px;padding:11px 20px;font-weight:700;cursor:pointer;font:inherit;font-weight:700}
+.main{background:#0E3B2E;color:#fff}
+.add{background:#F5B335;color:#0B1F1A}
+.del{background:#fde3dc;color:#E4572E;margin-top:12px}
+#out{height:240px;font-family:monospace;font-size:.8rem}
+.note{background:#fff7e0;border-radius:12px;padding:14px;margin:14px 0;font-size:.92rem}
+#login{max-width:340px;margin:20vh auto;text-align:center}
+#login input{margin:14px 0}
+@media(max-width:640px){.row,.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="login" class="box">
+  <h2>🔐 አድሚን</h2>
+  <input type="password" id="pw" placeholder="የይለፍ ቃል">
+  <button class="main" id="enter" style="width:100%">ግባ</button>
+  <p id="err" style="color:#E4572E;margin-top:10px"></p>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <h1>አድሚን ፓናል</h1>
+  <p>ለውጥ አድርግ፣ ከታች ኮዱን ኮፒ አድርግና በ <b>products.js</b> ውስጥ ፔስት አድርግ።</p>
+
+  <h2>የዌብሳይቱ መረጃ</h2>
+  <div class="box">
+    <label>ዋና ርዕስ</label><input id="s_title">
+    <label>መግለጫ</label><textarea id="s_text" rows="2"></textarea>
+    <div class="row2">
+      <div><label>ቴሌግራም ስም (ያለ @)</label><input id="s_tg"></div>
+      <div><label>ስልክ ቁጥር</label><input id="s_phone"></div>
+    </div>
+  </div>
+
+  <h2>ምርቶች</h2>
+  <div id="list"></div>
+  <button class="add" id="addBtn">+ አዲስ ምርት ጨምር</button>
+
+  <h2>የመጨረሻ ኮድ</h2>
+  <div class="note">
+    1) <b>ኮድ ኮፒ አድርግ</b> ን ተጫን<br>
+    2) VS Code ውስጥ <b>products.js</b> ክፈት፣ ሁሉን ሰርዝና ፔስት አድርግ፣ Ctrl+S<br>
+    3) GitHub Desktop → Commit → Push<br>
+    4) ከ1-2 ደቂቃ በኋላ ዌብሳይቱ ይታደሳል
+  </div>
+  <textarea id="out" readonly></textarea><br><br>
+  <button class="main" id="copy">📋 ኮድ ኮፒ አድርግ</button>
+  <button class="del" id="reset">ለውጡን ሰርዝ</button>
+  <p id="msg" style="margin-top:10px;font-weight:700"></p>
+</div>
+
+<script src="products.js"></script>
+<script>
+const PASS='mraffix123'; /* ይህን ቀይር */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const clone=o=>JSON.parse(JSON.stringify(o));
+let data=null;
+try{data=JSON.parse(localStorage.getItem('mraffix_draft'))}catch(e){}
+if(!data)data={site:clone(site),products:clone(products)};
+function save(){try{localStorage.setItem('mraffix_draft',JSON.stringify(data))}catch(e){}}
+
+function login(){
+  if($('pw').value===PASS){$('login').hidden=true;$('app').hidden=false;draw();}
+  else $('err').textContent='የይለፍ ቃሉ ትክክል አይደለም።';
+}
+$('enter').onclick=login;
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+
+function out(){
+  $('out').value='const site='+JSON.stringify(data.site,null,1)+';\nconst products='+JSON.stringify(data.products,null,1)+';\n';
+}
+function draw(){
+  ['title','text','tg','phone'].forEach(k=>{
+    $('s_'+k).value=data.site[k];
+    $('s_'+k).oninput=e=>{data.site[k]=e.target.value;save();out();};
+  });
+  const L=$('list');L.innerHTML='';
+  data.products.forEach((x,i)=>{
+    const d=document.createElement('div');d.className='box';
+    d.innerHTML=`
+     <div class="row">
+      <div><label>የምርት ስም</label><input data-i="${i}" data-k="n" value="${esc(x.n)}"></div>
+      <div><label>ዋጋ (ብር)</label><input type="number" data-i="${i}" data-k="p" value="${esc(x.p)}"></div>
+      <div><label>ኢሞጂ</label><input data-i="${i}" data-k="e" value="${esc(x.e)}"></div>
+      <div><label>ቀለም</label><input type="color" data-i="${i}" data-k="c" value="${esc(x.c)}"></div>
+     </div>
+     <label>የፎቶ አድራሻ (አማራጭ፣ ለምሳሌ img/banner.jpg። ባዶ ከሆነ ኢሞጂ ይታያል)</label>
+     <input data-i="${i}" data-k="img" value="${esc(x.img||'')}">
+     <button class="del" data-del="${i}">🗑 ይህን ምርት ሰርዝ</button>`;
+    L.appendChild(d);
+  });
+  out();
+}
+$('list').addEventListener('input',e=>{
+  const t=e.target,i=t.dataset.i,k=t.dataset.k;
+  if(i===undefined)return;
+  data.products[i][k]=k==='p'?Number(t.value):t.value;
+  save();out();
+});
+$('list').addEventListener('click',e=>{
+  const i=e.target.dataset.del;
+  if(i!==undefined&&confirm('ይህን ምርት ልሰርዝ?')){data.products.splice(i,1);save();draw();}
+});
+$('addBtn').onclick=()=>{data.products.push({n:'አዲስ ምርት',p:100,e:'📦',c:'#E1DAF5',img:''});save();draw();};
+$('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('out').value);}
+  catch(e){$('out').select();document.execCommand('copy');}
+  $('msg').textContent='✅ ተቀድቷል! አሁን products.js ውስጥ ፔስት አድርግ።';
+};
+$('reset').onclick=()=>{
+  if(confirm('ያልተላከ ለውጥ ሁሉ ይሰረዛል። እርግጠኛ ነህ?')){
+    try{localStorage.removeItem('mraffix_draft')}catch(e){}
+    data={site:clone(site),products:clone(products)};draw();
+  }
+};
+</script>
+</body>
+</html>

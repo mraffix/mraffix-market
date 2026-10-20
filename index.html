@@ -118,12 +118,16 @@ const products=[
  {n:'ስቲከር (500)',p:800,e:'🏷️',c:'#E1DAF5'}
 ];
 let cart=[];
+document.querySelector('.hero h1').textContent=site.title;
+document.querySelector('.hero p').textContent=site.text;
+document.querySelector('a[href^="tel:"]').href='tel:'+site.phone;
+document.querySelector('.contact a[href^="https://t.me"]').href='https://t.me/'+site.tg;
 
 /* ---------- ካርዶች + 3D ዘንበል ---------- */
 const grid=document.getElementById('grid');
 products.forEach((x,i)=>{
  const d=document.createElement('div');d.className='card';
- d.innerHTML=`<div class="pic" style="background:${x.c}">${x.e}</div><h3>${x.n}</h3><p class="price">${x.p.toLocaleString()} ብር</p><button>ወደ ጋሪ ጨምር</button>`;
+ d.innerHTML=`<div class="pic" style="background:${x.c}">${x.img?`<img src="${x.img}" alt="${x.n}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">`:x.e}</div><h3>${x.n}</h3><p class="price">${x.p.toLocaleString()} ብር</p><button>ወደ ጋሪ ጨምር</button>`;
  d.querySelector('button').onclick=()=>{cart.push(i);render();};
  d.addEventListener('mousemove',e=>{
   const r=d.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
@@ -150,7 +154,7 @@ function render(){
  const t=cart.reduce((s,id)=>s+products[id].p,0);
  document.getElementById('total').textContent='ጠቅላላ: '+t.toLocaleString()+' ብር';
  const msg='ሰላም! ይህን ማዘዝ እፈልጋለሁ:%0A'+cart.map(id=>'- '+products[id].n+' ('+products[id].p+' ብር)').join('%0A')+'%0Aጠቅላላ: '+t+' ብር';
- document.getElementById('order').href='https://t.me/YOUR_USERNAME?text='+msg;
+ document.getElementById('order').href='document.getElementById('order').href='https://t.me/'+site.tg+'?text='+msg;
  if(cart.length)drawer.classList.add('open');
 }
 render();drawer.classList.remove('open');
@@ -197,4 +201,4 @@ render();drawer.classList.remove('open');
 })();
 </script>
 </body>
-</html>>
+</html>
