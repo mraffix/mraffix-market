@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mraffix Market</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Mraffix Market</h1>
+    <nav>
+      <a href="#products">ምርቶች</a>
+      <a href="#contact">አግኙን</a>
+      <span id="cart-count">🛒 0</span>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>ለንግድዎ የሚያስፈልጉ የማርኬቲንግ ዕቃዎች</h2>
+    <p>ባነር፣ ብሮሸር፣ ቲሸርት፣ ስቲከር እና ሌሎችም</p>
+    <a href="#products" class="btn">ምርቶችን ይመልከቱ</a>
+  </section>
+
+  <section id="products">
+    <h2>ምርቶቻችን</h2>
+    <div class="product-grid">
+
+      <div class="product">
+        <div class="product-img">🎌</div>
+        <h3>ሮል አፕ ባነር</h3>
+        <p class="price">1,500 ብር</p>
+        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
+      </div>
+
+      <div class="product">
+        <div class="product-img">👕</div>
+        <h3>ብራንድ ቲሸርት</h3>
+        <p class="price">350 ብር</p>
+        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
+      </div>
+
+      <div class="product">
+        <div class="product-img">📄</div>
+        <h3>ብሮሸር (100 ቁራጭ)</h3>
+        <p class="price">2,000 ብር</p>
+        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
+      </div>
+
+      <div class="product">
+        <div class="product-img">🏷️</div>
+        <h3>ስቲከር (500 ቁራጭ)</h3>
+        <p class="price">800 ብር</p>
+        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>አግኙን</h2>
+    <p>📞 ስልክ: +251 9XX XXX XXX</p>
+    <p>📍 አዲስ አበባ፣ ኢትዮጵያ</p>
+  </section>
+
+  <footer>
+    <p>© 2026 Mraffix Market. መብቱ በሕግ የተጠበቀ ነው።</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
