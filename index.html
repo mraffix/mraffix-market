@@ -1,73 +1,200 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mraffix Market</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mraffix Market | የማርኬቲንግ ዕቃዎች</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#0E3B2E;--ink:#0B1F1A;--sun:#F5B335;--tom:#E4572E;--mist:#EEF3F0;--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans Ethiopic','Bricolage Grotesque',system-ui,sans-serif;background:var(--mist);color:var(--ink);line-height:1.6}
+h1,h2,h3,.logo{font-family:'Bricolage Grotesque','Noto Sans Ethiopic',sans-serif;line-height:1.1}
+a:focus-visible,button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+header{position:fixed;inset:0 0 auto;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:16px 5vw;color:#fff;backdrop-filter:blur(10px);background:rgba(14,59,46,.55)}
+.logo{font-weight:800;font-size:1.4rem}
+.logo b{color:var(--sun)}
+nav{display:flex;gap:22px;align-items:center}
+nav a{color:#fff;text-decoration:none}
+#cartBtn{background:var(--sun);color:var(--ink);border:0;border-radius:99px;padding:8px 18px;font-weight:700;cursor:pointer}
+.hero{position:relative;min-height:100vh;background:radial-gradient(circle at 70% 40%,#16604a,var(--green) 60%);color:#fff;display:flex;align-items:center;overflow:hidden}
+#scene{position:absolute;inset:0;width:100%;height:100%}
+.hero-text{position:relative;z-index:2;padding:0 5vw;max-width:640px;pointer-events:none}
+.hero-text a{pointer-events:auto}
+.hero h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:800;letter-spacing:-.02em}
+.hero p{margin:20px 0 30px;font-size:1.15rem;max-width:46ch;color:#d6e7df}
+.btn{display:inline-block;background:var(--sun);color:var(--ink);padding:14px 30px;border-radius:99px;font-weight:700;text-decoration:none;transition:transform .2s}
+.btn:hover{transform:translateY(-3px)}
+section{padding:90px 5vw}
+.title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:12px}
+.sub{color:#4b625b;margin-bottom:44px;max-width:56ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;perspective:1000px}
+.card{background:#fff;border-radius:22px;padding:26px;transform-style:preserve-3d;transition:transform .15s ease-out,box-shadow .3s;box-shadow:0 10px 30px rgba(14,59,46,.12);will-change:transform}
+.card .pic{height:150px;border-radius:16px;display:grid;place-items:center;font-size:4.2rem;transform:translateZ(40px);margin-bottom:18px}
+.card h3{font-size:1.2rem;transform:translateZ(25px)}
+.card .price{color:var(--tom);font-weight:700;margin:6px 0 16px;transform:translateZ(20px)}
+.card button{width:100%;border:0;background:var(--green);color:#fff;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;transform:translateZ(30px)}
+.card button:hover{background:var(--tom)}
+.why{background:var(--green);color:#fff}
+.why .sub{color:#b9d4c9}
+.why .grid div{background:rgba(255,255,255,.08);padding:26px;border-radius:18px}
+.why h3{color:var(--sun);margin-bottom:8px}
+.contact{text-align:center}
+.contact .btn{margin:8px}
+footer{background:var(--ink);color:#9bb3aa;text-align:center;padding:26px}
+#drawer{position:fixed;top:0;right:0;height:100%;width:min(380px,100%);background:#fff;z-index:30;padding:26px;transform:translateX(105%);transition:transform .35s;box-shadow:-10px 0 40px rgba(0,0,0,.2);display:flex;flex-direction:column}
+#drawer.open{transform:none}
+#items{flex:1;overflow:auto;margin:18px 0}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e3ebe7}
+.row button{border:0;background:none;color:var(--tom);cursor:pointer;font-weight:700;margin-left:10px}
+#close{align-self:flex-end;border:0;background:none;font-size:1.6rem;cursor:pointer}
+#total{font-weight:800;font-size:1.2rem;margin-bottom:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:640px){nav a{display:none}.hero-text{padding-top:90px}}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Mraffix Market</h1>
-    <nav>
-      <a href="#products">ምርቶች</a>
-      <a href="#contact">አግኙን</a>
-      <span id="cart-count">🛒 0</span>
-    </nav>
-  </header>
+<header>
+  <div class="logo">Mraffix<b>.</b>Market</div>
+  <nav>
+    <a href="#products">ምርቶች</a>
+    <a href="#why">ለምን እኛ</a>
+    <a href="#contact">አግኙን</a>
+    <button id="cartBtn" aria-label="ጋሪ ክፈት">🛒 <span id="count">0</span></button>
+  </nav>
+</header>
 
-  <section class="hero">
-    <h2>ለንግድዎ የሚያስፈልጉ የማርኬቲንግ ዕቃዎች</h2>
-    <p>ባነር፣ ብሮሸር፣ ቲሸርት፣ ስቲከር እና ሌሎችም</p>
-    <a href="#products" class="btn">ምርቶችን ይመልከቱ</a>
-  </section>
+<div class="hero">
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="hero-text">
+    <h1>ብራንድዎ በእጅ ይያዝ።</h1>
+    <p>ባነር፣ ቲሸርት፣ ብሮሸር እና ስቲከር። ለንግድዎ የሚያስፈልግ የማርኬቲንግ ዕቃ ሁሉ በአንድ ቦታ።</p>
+    <a class="btn" href="#products">ምርቶችን ይመልከቱ</a>
+  </div>
+</div>
 
-  <section id="products">
-    <h2>ምርቶቻችን</h2>
-    <div class="product-grid">
+<section id="products">
+  <h2 class="title">ምርቶቻችን</h2>
+  <p class="sub">ካርዶቹ ላይ ሞውስ ሲያንቀሳቅሱ ዘወር ይላሉ። የሚፈልጉትን ወደ ጋሪ ይጨምሩ።</p>
+  <div class="grid" id="grid"></div>
+</section>
 
-      <div class="product">
-        <div class="product-img">🎌</div>
-        <h3>ሮል አፕ ባነር</h3>
-        <p class="price">1,500 ብር</p>
-        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
-      </div>
+<section class="why" id="why">
+  <h2 class="title">ለምን Mraffix?</h2>
+  <p class="sub">ንግድዎ እንዲታይ የምንሰራው እንደራሳችን ንግድ ነው።</p>
+  <div class="grid">
+    <div><h3>ፈጣን ማድረስ</h3><p>በአዲስ አበባ ውስጥ በ2 ቀን ውስጥ።</p></div>
+    <div><h3>ጥራት ያለው ህትመት</h3><p>ደማቅ ቀለም፣ ዘላቂ ቁሳቁስ።</p></div>
+    <div><h3>የራስዎ ዲዛይን</h3><p>አርማዎን ይላኩ፣ እኛ እናተምለታለን።</p></div>
+  </div>
+</section>
 
-      <div class="product">
-        <div class="product-img">👕</div>
-        <h3>ብራንድ ቲሸርት</h3>
-        <p class="price">350 ብር</p>
-        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
-      </div>
+<section class="contact" id="contact">
+  <h2 class="title">ዛሬ ይዘዙ</h2>
+  <p class="sub" style="margin-inline:auto">ስልክ፣ ቴሌግራም ወይም ዋትስአፕ ያግኙን።</p>
+  <a class="btn" href="tel:+2519XXXXXXXX">📞 ይደውሉ</a>
+  <a class="btn" href="https://t.me/YOUR_USERNAME">✈️ ቴሌግራም</a>
+</section>
 
-      <div class="product">
-        <div class="product-img">📄</div>
-        <h3>ብሮሸር (100 ቁራጭ)</h3>
-        <p class="price">2,000 ብር</p>
-        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
-      </div>
+<footer>© 2026 Mraffix Market. መብቱ በሕግ የተጠበቀ ነው።</footer>
 
-      <div class="product">
-        <div class="product-img">🏷️</div>
-        <h3>ስቲከር (500 ቁራጭ)</h3>
-        <p class="price">800 ብር</p>
-        <button onclick="addToCart()">ወደ ጋሪ ጨምር</button>
-      </div>
+<aside id="drawer" aria-label="ጋሪ">
+  <button id="close" aria-label="ዝጋ">✕</button>
+  <h2>ጋሪዎ</h2>
+  <div id="items"></div>
+  <div id="total"></div>
+  <a class="btn" id="order" href="#" style="text-align:center">በቴሌግራም ይዘዙ</a>
+</aside>
 
-    </div>
-  </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- ምርቶች (እዚህ ጋር ይቀይሩ) ---------- */
+const products=[
+ {n:'ሮል አፕ ባነር',p:1500,e:'🎌',c:'#FDE9B8'},
+ {n:'ብራንድ ቲሸርት',p:350,e:'👕',c:'#FAD3C6'},
+ {n:'ብሮሸር (100)',p:2000,e:'📄',c:'#CFE6DC'},
+ {n:'ስቲከር (500)',p:800,e:'🏷️',c:'#E1DAF5'}
+];
+let cart=[];
 
-  <section id="contact">
-    <h2>አግኙን</h2>
-    <p>📞 ስልክ: +251 9XX XXX XXX</p>
-    <p>📍 አዲስ አበባ፣ ኢትዮጵያ</p>
-  </section>
+/* ---------- ካርዶች + 3D ዘንበል ---------- */
+const grid=document.getElementById('grid');
+products.forEach((x,i)=>{
+ const d=document.createElement('div');d.className='card';
+ d.innerHTML=`<div class="pic" style="background:${x.c}">${x.e}</div><h3>${x.n}</h3><p class="price">${x.p.toLocaleString()} ብር</p><button>ወደ ጋሪ ጨምር</button>`;
+ d.querySelector('button').onclick=()=>{cart.push(i);render();};
+ d.addEventListener('mousemove',e=>{
+  const r=d.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+  d.style.transform=`rotateY(${px*16}deg) rotateX(${-py*16}deg)`;
+ });
+ d.addEventListener('mouseleave',()=>d.style.transform='');
+ grid.appendChild(d);
+});
 
-  <footer>
-    <p>© 2026 Mraffix Market. መብቱ በሕግ የተጠበቀ ነው።</p>
-  </footer>
+/* ---------- ጋሪ ---------- */
+const drawer=document.getElementById('drawer');
+document.getElementById('cartBtn').onclick=()=>drawer.classList.add('open');
+document.getElementById('close').onclick=()=>drawer.classList.remove('open');
+function render(){
+ document.getElementById('count').textContent=cart.length;
+ const box=document.getElementById('items');
+ box.innerHTML=cart.length?'':'<p>ጋሪዎ ባዶ ነው። ምርት ይጨምሩ።</p>';
+ cart.forEach((id,k)=>{
+  const r=document.createElement('div');r.className='row';
+  r.innerHTML=`<span>${products[id].e} ${products[id].n}</span><span>${products[id].p.toLocaleString()}<button aria-label="አስወግድ">✕</button></span>`;
+  r.querySelector('button').onclick=()=>{cart.splice(k,1);render();};
+  box.appendChild(r);
+ });
+ const t=cart.reduce((s,id)=>s+products[id].p,0);
+ document.getElementById('total').textContent='ጠቅላላ: '+t.toLocaleString()+' ብር';
+ const msg='ሰላም! ይህን ማዘዝ እፈልጋለሁ:%0A'+cart.map(id=>'- '+products[id].n+' ('+products[id].p+' ብር)').join('%0A')+'%0Aጠቅላላ: '+t+' ብር';
+ document.getElementById('order').href='https://t.me/YOUR_USERNAME?text='+msg;
+ if(cart.length)drawer.classList.add('open');
+}
+render();drawer.classList.remove('open');
 
-  <script src="script.js"></script>
+/* ---------- 3D ትዕይንት (three.js) ---------- */
+(function(){
+ const cv=document.getElementById('scene');
+ if(typeof THREE==='undefined')return;
+ const R=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+ R.setPixelRatio(Math.min(devicePixelRatio,2));
+ const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(45,1,.1,100);
+ C.position.z=9;
+ S.add(new THREE.AmbientLight(0xffffff,.55));
+ const L=new THREE.DirectionalLight(0xffffff,.9);L.position.set(4,6,6);S.add(L);
+ const mat=c=>new THREE.MeshStandardMaterial({color:c,roughness:.35,metalness:.15});
+ const g=new THREE.Group();S.add(g);
+ const box=new THREE.Mesh(new THREE.BoxGeometry(2.2,2.2,2.2),mat(0xF5B335));g.add(box);
+ const ribbon=new THREE.Mesh(new THREE.BoxGeometry(2.25,2.25,.45),mat(0xE4572E));g.add(ribbon);
+ const ribbon2=new THREE.Mesh(new THREE.BoxGeometry(.45,2.25,2.25),mat(0xE4572E));g.add(ribbon2);
+ const floats=[];
+ [[new THREE.IcosahedronGeometry(.6),0xffffff,-3.4,1.8],
+  [new THREE.TorusGeometry(.5,.18,16,40),0xE4572E,3.6,-1.6],
+  [new THREE.OctahedronGeometry(.55),0xF5B335,-3,-2],
+  [new THREE.CylinderGeometry(.35,.35,.9,24),0x7fd1ae,3.2,2.2]
+ ].forEach(a=>{const m=new THREE.Mesh(a[0],mat(a[1]));m.position.set(a[2],a[3],-1);S.add(m);floats.push(m);});
+ let mx=0,my=0;
+ addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
+ function size(){
+  const w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix();
+  g.position.x=w>760?2.6:0;g.position.y=w>760?0:-1.8;g.scale.setScalar(w>760?1:.75);
+ }
+ addEventListener('resize',size);size();
+ const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ function loop(t){
+  t*=.001;
+  if(!still){
+   g.rotation.y=t*.5+mx*1.2;g.rotation.x=.35+my*.8;
+   g.position.z=Math.sin(t)*.2;
+   floats.forEach((m,i)=>{m.rotation.x=t*(.4+i*.15);m.rotation.y=t*.6;m.position.y+=Math.sin(t+i)*.003;});
+  } else {g.rotation.set(.35,.6,0);}
+  R.render(S,C);requestAnimationFrame(loop);
+ }
+ requestAnimationFrame(loop);
+})();
+</script>
 </body>
-</html>
+</html>>
